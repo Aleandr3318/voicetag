@@ -1,0 +1,38 @@
+site_name: voicetag
+site_description: Automatic speaker diarization + named speaker identification
+site_url: https://Gr122lyBr.github.io/voicetag/
+repo_url: https://github.com/Gr122lyBr/voicetag
+repo_name: Gr122lyBr/voicetag
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - content.code.copy
+    - navigation.sections
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - API Reference: api.md
+  - CLI: cli.md
+  - Configuration: configuration.md
+  - Contributing: contributing.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - admonition
+  - tables

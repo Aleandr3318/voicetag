@@ -1,0 +1,94 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voicetag"
+version = "0.1.0"
+description = "Speaker identification powered by pyannote and resemblyzer"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "voicetag contributors"},
+]
+keywords = ["speaker", "diarization", "identification", "pyannote", "resemblyzer", "audio"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.24",
+    "pydantic>=2.0",
+    "soundfile>=0.12",
+    "loguru>=0.7",
+    "typer>=0.9",
+    "rich>=13.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Gr122lyBr/voicetag"
+Documentation = "https://Gr122lyBr.github.io/voicetag/"
+Repository = "https://github.com/Gr122lyBr/voicetag"
+Issues = "https://github.com/Gr122lyBr/voicetag/issues"
+Changelog = "https://github.com/Gr122lyBr/voicetag/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+ml = [
+    "resemblyzer>=0.1.3",
+    "pyannote.audio>=3.1",
+    "torch>=2.0",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=24.0",
+    "ruff>=0.3",
+    "mypy>=1.9",
+    "pre-commit>=3.0",
+    "build>=1.0",
+]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.0",
+]
+
+[project.scripts]
+voicetag = "voicetag.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["voicetag*"]
+
+[tool.black]
+line-length = 99
+target-version = ["py39"]
+
+[tool.ruff]
+line-length = 99
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.mypy]
+python_version = "3.9"
+plugins = ["pydantic.mypy"]
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
