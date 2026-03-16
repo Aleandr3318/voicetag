@@ -116,7 +116,8 @@ class SpeakerEncoder:
         from resemblyzer import preprocess_wav
 
         wav = preprocess_wav(audio, source_sr=sr)
-        embedding = self._encoder.embed_utterance(wav)
+        assert self._encoder is not None
+        embedding: np.ndarray = self._encoder.embed_utterance(wav)
         return embedding
 
     def compare(
