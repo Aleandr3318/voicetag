@@ -26,7 +26,7 @@ from voicetag.transcriber import available_providers  # noqa: E402
 
 logger.disable("voicetag")
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 
 __all__ = [
     "VoiceTag",
