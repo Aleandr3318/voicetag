@@ -4,23 +4,23 @@ from __future__ import annotations
 
 from loguru import logger
 
-logger.disable("voicetag")
-
-from voicetag.exceptions import (
+from voicetag.exceptions import (  # noqa: E402
     AudioLoadError,
     DiarizationError,
     EnrollmentError,
     VoiceTagConfigError,
     VoiceTagError,
 )
-from voicetag.models import (
+from voicetag.models import (  # noqa: E402
     DiarizationResult,
     OverlapSegment,
     SpeakerProfile,
     SpeakerSegment,
     VoiceTagConfig,
 )
-from voicetag.pipeline import Pipeline as VoiceTag
+from voicetag.pipeline import Pipeline as VoiceTag  # noqa: E402
+
+logger.disable("voicetag")
 
 __version__ = "0.1.0"
 
