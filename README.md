@@ -37,21 +37,29 @@ Enroll speakers once with a few audio samples, then identify them in any recordi
 from voicetag import VoiceTag
 
 vt = VoiceTag()
-vt.enroll("Alice", ["alice1.wav", "alice2.wav"])
-vt.enroll("Bob", ["bob1.wav"])
+vt.enroll("Christie", ["christie1.flac", "christie2.flac", "christie3.flac"])
+vt.enroll("Mark", ["mark1.flac", "mark2.flac"])
 
-result = vt.identify("meeting.wav")
-for segment in result.segments:
-    print(f"{segment.speaker}: {segment.start:.1f}s - {segment.end:.1f}s")
+# Identify who spoke when
+result = vt.identify("audiobook.flac")
+for seg in result.segments:
+    print(f"{seg.speaker}: {seg.start:.1f}s - {seg.end:.1f}s (confidence: {seg.confidence:.2f})")
+
+# Transcribe: who said what
+transcript = vt.transcribe("audiobook.flac", provider="whisper")
+print(transcript.full_transcript)
 ```
 
 Output:
 
 ```
-Alice: 0.0s - 4.2s
-Bob: 4.5s - 8.1s
-Alice: 8.3s - 12.7s
-UNKNOWN: 13.0s - 15.4s
+Christie: 0.0s - 2.6s (confidence: 0.85)
+Christie: 2.6s - 6.7s (confidence: 0.88)
+Christie: 7.0s - 8.1s (confidence: 0.78)
+
+[Christie] Gentlemen, he sat in a hoarse voice. Give me your
+[Christie] word of honor that this horrible secret shall forever remain buried amongst ourselves.
+[Christie] The two men drew back.
 ```
 
 ## Installation
@@ -109,74 +117,64 @@ voicetag ships with a full-featured command-line interface.
 ### Enroll a speaker
 
 ```bash
-voicetag enroll "Alice" alice_sample1.wav alice_sample2.wav
+voicetag enroll "Christie" christie1.flac christie2.flac christie3.flac
+voicetag enroll "Mark" mark1.flac mark2.flac
 ```
 
-```
-Enrolled speaker Alice from 2 sample(s).
-Profiles saved to voicetag_profiles.json
-```
-
-### Identify speakers in a recording
+### Identify speakers
 
 ```bash
-voicetag identify meeting.wav --threshold 0.8
+voicetag identify audiobook.flac
 ```
 
 ```
-Speaker Timeline -- meeting.wav
-+---------+----------+----------+----------+------------+
-| Speaker | Start    | End      | Duration | Confidence |
-+---------+----------+----------+----------+------------+
-| Alice   | 00:00.00 | 00:04.20 | 00:04.20 | 0.92       |
-| Bob     | 00:04.50 | 00:08.10 | 00:03.60 | 0.87       |
-| Alice   | 00:08.30 | 00:12.70 | 00:04.40 | 0.91       |
-| UNKNOWN | 00:13.00 | 00:15.40 | 00:02.40 | --         |
-+---------+----------+----------+----------+------------+
+Speaker Timeline — audiobook.flac
++-----------+----------+----------+----------+------------+
+| Speaker   | Start    | End      | Duration | Confidence |
++-----------+----------+----------+----------+------------+
+| Christie  | 00:00.00 | 00:02.60 | 00:02.60 | 0.85       |
+| Christie  | 00:02.60 | 00:06.70 | 00:04.10 | 0.88       |
+| Christie  | 00:07.00 | 00:08.10 | 00:01.10 | 0.78       |
++-----------+----------+----------+----------+------------+
 
 Summary
-  Total duration:  00:15.400
-  Speakers:        2
-  Segments:        4
-  Overlaps:        0
+  Total duration:  8.4s
+  Speakers:        1
+  Segments:        3
 ```
 
-Save results to JSON:
+### Transcribe (speaker + text)
 
 ```bash
-voicetag identify meeting.wav --output results.json
+voicetag transcribe audiobook.flac --provider whisper --language en
+```
+
+```
+Transcript — audiobook.flac
++-----------+----------+----------+--------------------------------------------------------------+
+| Speaker   | Start    | End      | Text                                                         |
++-----------+----------+----------+--------------------------------------------------------------+
+| Christie  | 00:00.00 | 00:02.60 | Gentlemen, he sat in a hoarse voice. Give me your            |
+| Christie  | 00:02.60 | 00:06.70 | word of honor that this horrible secret shall forever remain  |
+|           |          |          | buried amongst ourselves.                                    |
+| Christie  | 00:07.00 | 00:08.10 | The two men drew back.                                       |
++-----------+----------+----------+--------------------------------------------------------------+
+```
+
+Other providers:
+
+```bash
+voicetag transcribe call.wav --provider openai --language en
+voicetag transcribe interview.wav --provider groq --language he
+voicetag transcribe meeting.wav --provider deepgram
 ```
 
 ### Manage profiles
 
 ```bash
 voicetag profiles list
-voicetag profiles remove "Alice"
-```
-
-### Transcribe (speaker + text)
-
-```bash
-voicetag transcribe meeting.wav --provider openai --language en
-voicetag transcribe meeting.wav --provider groq --language he
-voicetag transcribe meeting.wav --provider whisper --model base
-```
-
-```
-Transcript -- meeting.wav
-+---------+----------+----------+------------------------------------+
-| Speaker | Start    | End      | Text                               |
-+---------+----------+----------+------------------------------------+
-| Alice   | 00:00.00 | 00:04.20 | Let's start the meeting            |
-| Bob     | 00:04.50 | 00:08.10 | Sure, I have the agenda ready      |
-| Alice   | 00:08.30 | 00:12.70 | Great, let's go through it         |
-+---------+----------+----------+------------------------------------+
-```
-
-List available providers:
-
-```bash
-voicetag providers
+voicetag profiles remove "Christie"
+voicetag providers              # list available STT providers
 ```
 
 ### All CLI options
