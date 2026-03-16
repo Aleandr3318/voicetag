@@ -3,6 +3,7 @@
 Provides commands for enrolling speakers, identifying speakers in audio,
 managing speaker profiles, and checking the version.
 """
+
 from __future__ import annotations
 
 import json
@@ -101,9 +102,7 @@ def enroll(
     if profiles.exists():
         try:
             encoder.load_profiles(profiles)
-            console.print(
-                f"[dim]Loaded existing profiles from {profiles}[/dim]"
-            )
+            console.print(f"[dim]Loaded existing profiles from {profiles}[/dim]")
         except VoiceTagError as exc:
             err_console.print(
                 Panel(
@@ -142,9 +141,7 @@ def enroll(
             )
         )
     except VoiceTagError as exc:
-        err_console.print(
-            Panel(str(exc), title="[red]Enrollment Error[/red]", border_style="red")
-        )
+        err_console.print(Panel(str(exc), title="[red]Enrollment Error[/red]", border_style="red"))
         raise typer.Exit(code=1)
 
 
@@ -170,9 +167,7 @@ def identify(
     hf_token: Optional[str] = typer.Option(
         None, "--hf-token", envvar="HF_TOKEN", help="HuggingFace API token."
     ),
-    device: str = typer.Option(
-        "cpu", "--device", help="Torch device (cpu, cuda, mps)."
-    ),
+    device: str = typer.Option("cpu", "--device", help="Torch device (cpu, cuda, mps)."),
 ) -> None:
     """Identify speakers in an audio file."""
     from voicetag import VoiceTag, VoiceTagConfig
@@ -189,9 +184,7 @@ def identify(
 
         if not unknown_only and profiles.exists():
             vt._encoder.load_profiles(profiles)
-            console.print(
-                f"[dim]Loaded profiles from {profiles}[/dim]"
-            )
+            console.print(f"[dim]Loaded profiles from {profiles}[/dim]")
 
         with Progress(
             SpinnerColumn(),
@@ -245,9 +238,7 @@ def identify(
         total_dur = result.audio_duration
         n_segments = len(result.segments)
         n_speakers = result.num_speakers
-        overlap_count = sum(
-            1 for s in result.segments if s.speaker == "OVERLAP"
-        )
+        overlap_count = sum(1 for s in result.segments if s.speaker == "OVERLAP")
 
         summary_lines = [
             f"[bold]Total duration:[/bold]  {format_time(total_dur)}",
@@ -272,9 +263,7 @@ def identify(
             console.print(f"[dim]Results saved to {output}[/dim]")
 
     except VoiceTagError as exc:
-        err_console.print(
-            Panel(str(exc), title="[red]Error[/red]", border_style="red")
-        )
+        err_console.print(Panel(str(exc), title="[red]Error[/red]", border_style="red"))
         raise typer.Exit(code=1)
 
 
@@ -305,9 +294,7 @@ def profiles_list(
         encoder = SpeakerEncoder()
         encoder.load_profiles(profiles)
     except VoiceTagError as exc:
-        err_console.print(
-            Panel(str(exc), title="[red]Error[/red]", border_style="red")
-        )
+        err_console.print(Panel(str(exc), title="[red]Error[/red]", border_style="red"))
         raise typer.Exit(code=1)
 
     speakers = encoder.enrolled_speakers
@@ -369,9 +356,7 @@ def profiles_remove(
             )
         )
     except VoiceTagError as exc:
-        err_console.print(
-            Panel(str(exc), title="[red]Error[/red]", border_style="red")
-        )
+        err_console.print(Panel(str(exc), title="[red]Error[/red]", border_style="red"))
         raise typer.Exit(code=1)
 
 

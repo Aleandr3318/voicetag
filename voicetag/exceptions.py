@@ -3,6 +3,7 @@
 All exceptions inherit from ``VoiceTagError`` so callers can catch broadly
 (``except VoiceTagError``) or narrowly (``except AudioLoadError``).
 """
+
 from __future__ import annotations
 
 
@@ -92,8 +93,7 @@ class AudioLoadError(VoiceTagError):
     def __init__(
         self,
         message: str = (
-            "Failed to load audio file. "
-            "Supported formats: wav, mp3, flac, ogg, m4a"
+            "Failed to load audio file. " "Supported formats: wav, mp3, flac, ogg, m4a"
         ),
     ) -> None:
         super().__init__(message)

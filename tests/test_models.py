@@ -1,4 +1,5 @@
 """Tests for voicetag.models — Pydantic v2 data models."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -14,7 +15,6 @@ from voicetag.models import (
     SpeakerSegment,
     VoiceTagConfig,
 )
-
 
 # ---------------------------------------------------------------------------
 # VoiceTagConfig
@@ -179,8 +179,6 @@ class TestDiarizationResult:
         assert result.processing_time == pytest.approx(1.23)
 
     def test_empty_segments(self):
-        result = DiarizationResult(
-            segments=[], audio_duration=10.0, num_speakers=0
-        )
+        result = DiarizationResult(segments=[], audio_duration=10.0, num_speakers=0)
         assert result.segments == []
         assert result.processing_time == 0.0

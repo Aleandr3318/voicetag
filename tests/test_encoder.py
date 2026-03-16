@@ -1,4 +1,5 @@
 """Tests for voicetag.encoder — SpeakerEncoder with mocked resemblyzer."""
+
 from __future__ import annotations
 
 import threading
@@ -11,7 +12,6 @@ import pytest
 from voicetag.encoder import SpeakerEncoder
 from voicetag.exceptions import EnrollmentError
 from voicetag.models import SpeakerProfile
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -27,6 +27,7 @@ def _fake_embedding(seed: int = 0) -> np.ndarray:
 
 # We patch resemblyzer at the module-import level inside encoder.py.
 # The encoder lazy-imports via _ensure_loaded and get_embedding.
+
 
 @pytest.fixture()
 def encoder():
@@ -45,9 +46,13 @@ def encoder():
 
 class TestEnroll:
     @patch("voicetag.encoder.load_audio")
-    def test_enroll_adds_profile(self, mock_load, encoder: SpeakerEncoder, sample_audio_files: list[Path]):
+    def test_enroll_adds_profile(
+        self, mock_load, encoder: SpeakerEncoder, sample_audio_files: list[Path]
+    ):
         mock_load.return_value = (np.zeros(16_000, dtype=np.float32), 16_000)
-        with patch("voicetag.encoder.SpeakerEncoder.get_embedding", return_value=_fake_embedding(1)):
+        with patch(
+            "voicetag.encoder.SpeakerEncoder.get_embedding", return_value=_fake_embedding(1)
+        ):
             profile = encoder.enroll("alice", [str(p) for p in sample_audio_files])
         assert isinstance(profile, SpeakerProfile)
         assert profile.name == "alice"
@@ -86,7 +91,9 @@ class TestGetEmbedding:
 
 
 class TestCompare:
-    def test_finds_best_match(self, encoder: SpeakerEncoder, mock_profiles_dict: dict[str, SpeakerProfile]):
+    def test_finds_best_match(
+        self, encoder: SpeakerEncoder, mock_profiles_dict: dict[str, SpeakerProfile]
+    ):
         # Use alice's exact embedding so she scores highest
         alice_emb = np.array(mock_profiles_dict["alice"].embedding, dtype=np.float32)
         name, score = encoder.compare(alice_emb, profiles=mock_profiles_dict)
@@ -119,7 +126,9 @@ class TestProfilesPersistence:
         sample_audio_files: list[Path],
     ):
         mock_load.return_value = (np.zeros(16_000, dtype=np.float32), 16_000)
-        with patch("voicetag.encoder.SpeakerEncoder.get_embedding", return_value=_fake_embedding(10)):
+        with patch(
+            "voicetag.encoder.SpeakerEncoder.get_embedding", return_value=_fake_embedding(10)
+        ):
             encoder.enroll("alice", [str(sample_audio_files[0])])
 
         encoder.save_profiles(tmp_profiles_path)
@@ -142,9 +151,13 @@ class TestProfilesPersistence:
 
 class TestRemoveSpeaker:
     @patch("voicetag.encoder.load_audio")
-    def test_remove_existing(self, mock_load, encoder: SpeakerEncoder, sample_audio_files: list[Path]):
+    def test_remove_existing(
+        self, mock_load, encoder: SpeakerEncoder, sample_audio_files: list[Path]
+    ):
         mock_load.return_value = (np.zeros(16_000, dtype=np.float32), 16_000)
-        with patch("voicetag.encoder.SpeakerEncoder.get_embedding", return_value=_fake_embedding(5)):
+        with patch(
+            "voicetag.encoder.SpeakerEncoder.get_embedding", return_value=_fake_embedding(5)
+        ):
             encoder.enroll("temp_speaker", [str(sample_audio_files[0])])
         assert "temp_speaker" in encoder.enrolled_speakers
 
@@ -166,9 +179,13 @@ class TestEnrolledSpeakers:
         assert encoder.enrolled_speakers == []
 
     @patch("voicetag.encoder.load_audio")
-    def test_reflects_enrollment(self, mock_load, encoder: SpeakerEncoder, sample_audio_files: list[Path]):
+    def test_reflects_enrollment(
+        self, mock_load, encoder: SpeakerEncoder, sample_audio_files: list[Path]
+    ):
         mock_load.return_value = (np.zeros(16_000, dtype=np.float32), 16_000)
-        with patch("voicetag.encoder.SpeakerEncoder.get_embedding", return_value=_fake_embedding(0)):
+        with patch(
+            "voicetag.encoder.SpeakerEncoder.get_embedding", return_value=_fake_embedding(0)
+        ):
             encoder.enroll("speaker_a", [str(sample_audio_files[0])])
             encoder.enroll("speaker_b", [str(sample_audio_files[1])])
         assert set(encoder.enrolled_speakers) == {"speaker_a", "speaker_b"}
@@ -181,7 +198,9 @@ class TestEnrolledSpeakers:
 
 class TestThreadSafety:
     @patch("voicetag.encoder.load_audio")
-    def test_concurrent_enroll(self, mock_load, encoder: SpeakerEncoder, sample_audio_files: list[Path]):
+    def test_concurrent_enroll(
+        self, mock_load, encoder: SpeakerEncoder, sample_audio_files: list[Path]
+    ):
         mock_load.return_value = (np.zeros(16_000, dtype=np.float32), 16_000)
 
         errors: list[Exception] = []

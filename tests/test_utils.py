@@ -1,4 +1,5 @@
 """Tests for voicetag.utils — audio I/O utilities."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -8,7 +9,6 @@ import pytest
 
 from voicetag.exceptions import AudioLoadError
 from voicetag.utils import chunk_audio, load_audio, validate_audio_path
-
 
 # ---------------------------------------------------------------------------
 # validate_audio_path

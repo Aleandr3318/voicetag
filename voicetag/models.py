@@ -3,6 +3,7 @@
 All models use strict validation. Segment models are frozen (immutable)
 to prevent accidental mutation of pipeline results.
 """
+
 from __future__ import annotations
 
 import os

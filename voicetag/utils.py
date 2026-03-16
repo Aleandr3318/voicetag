@@ -3,6 +3,7 @@
 Provides functions for loading, validating, resampling, and chunking audio
 files.  No ML dependencies — only ``soundfile`` and ``numpy``.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -69,15 +70,15 @@ def load_audio(
     try:
         data, sr = sf.read(str(audio_path), dtype="float32")
     except Exception as exc:
-        raise AudioLoadError(
-            f"Cannot read audio file '{audio_path.name}': {exc}"
-        ) from exc
+        raise AudioLoadError(f"Cannot read audio file '{audio_path.name}': {exc}") from exc
 
     logger.debug("Loaded audio: {} samples, sr={}", len(data), sr)
 
     if data.ndim > 1:
         data = data.mean(axis=1)
-        logger.debug("Converted to mono by averaging {} channels", data.shape[1] if data.ndim > 1 else 2)
+        logger.debug(
+            "Converted to mono by averaging {} channels", data.shape[1] if data.ndim > 1 else 2
+        )
 
     if sr != target_sr:
         data = _resample(data, sr, target_sr)

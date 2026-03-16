@@ -4,6 +4,7 @@ Pure-function module with no internal state. Identifies time regions where
 two or more speakers talk simultaneously and merges segments into a unified
 timeline.
 """
+
 from __future__ import annotations
 
 from loguru import logger
@@ -49,9 +50,7 @@ def detect_overlaps(
             if overlap_duration >= threshold:
                 overlaps.append(
                     {
-                        "speakers": sorted(
-                            {seg_a["speaker"], seg_b["speaker"]}
-                        ),
+                        "speakers": sorted({seg_a["speaker"], seg_b["speaker"]}),
                         "start": overlap_start,
                         "end": overlap_end,
                     }
@@ -79,10 +78,7 @@ def _merge_overlap_regions(overlaps: list[dict]) -> list[dict]:
 
     for current in sorted_overlaps[1:]:
         last = merged[-1]
-        if (
-            current["start"] <= last["end"]
-            and current["speakers"] == last["speakers"]
-        ):
+        if current["start"] <= last["end"] and current["speakers"] == last["speakers"]:
             merged[-1] = {
                 "speakers": last["speakers"],
                 "start": last["start"],

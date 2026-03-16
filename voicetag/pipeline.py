@@ -4,6 +4,7 @@ Contains the ``Pipeline`` class that coordinates diarization, embedding
 computation, speaker matching, and overlap detection into a single
 ``identify()`` call.
 """
+
 from __future__ import annotations
 
 import time
@@ -144,9 +145,7 @@ class Pipeline:
         segment_data: list[tuple[dict, np.ndarray]] = []
 
         def _process_segment(seg: dict) -> Optional[tuple[dict, np.ndarray]]:
-            segment_audio = self._extract_segment(
-                audio, sr, seg["start"], seg["end"]
-            )
+            segment_audio = self._extract_segment(audio, sr, seg["start"], seg["end"])
             if len(segment_audio) < int(sr * 0.1):
                 return None
             try:
@@ -186,9 +185,7 @@ class Pipeline:
                 )
             )
 
-        raw_overlaps = detect_overlaps(
-            raw_segments, threshold=self._config.overlap_threshold
-        )
+        raw_overlaps = detect_overlaps(raw_segments, threshold=self._config.overlap_threshold)
         overlap_segments: list[OverlapSegment] = [
             OverlapSegment(
                 speakers=ovlp["speakers"],
@@ -208,8 +205,7 @@ class Pipeline:
             for s in speaker_segments
         ]
         overlap_dicts = [
-            {"speakers": o.speakers, "start": o.start, "end": o.end}
-            for o in overlap_segments
+            {"speakers": o.speakers, "start": o.start, "end": o.end} for o in overlap_segments
         ]
         merged = merge_segments(
             speaker_dicts,

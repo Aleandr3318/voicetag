@@ -4,6 +4,7 @@ Manages the ``VoiceEncoder`` from resemblyzer and maintains an in-memory
 enrollment store mapping speaker names to their mean embedding vectors.
 Thread-safe via ``threading.Lock``.
 """
+
 from __future__ import annotations
 
 import json
@@ -65,9 +66,7 @@ class SpeakerEncoder:
                 embedding computation fails.
         """
         if not audio_paths:
-            raise EnrollmentError(
-                f"Cannot enroll '{name}': no audio files provided."
-            )
+            raise EnrollmentError(f"Cannot enroll '{name}': no audio files provided.")
 
         self._ensure_loaded()
         embeddings: list[np.ndarray] = []
@@ -86,9 +85,7 @@ class SpeakerEncoder:
                 )
 
         if not embeddings:
-            raise EnrollmentError(
-                f"Cannot enroll '{name}': no valid audio files provided."
-            )
+            raise EnrollmentError(f"Cannot enroll '{name}': no valid audio files provided.")
 
         mean_embedding = np.mean(embeddings, axis=0)
         mean_embedding = mean_embedding / (np.linalg.norm(mean_embedding) + 1e-10)
@@ -102,9 +99,7 @@ class SpeakerEncoder:
         with self._lock:
             self._profiles[name] = profile
 
-        logger.info(
-            "Enrolled speaker '{}' from {} audio file(s)", name, len(embeddings)
-        )
+        logger.info("Enrolled speaker '{}' from {} audio file(s)", name, len(embeddings))
         return profile
 
     def get_embedding(self, audio: np.ndarray, sr: int = 16000) -> np.ndarray:
@@ -184,8 +179,7 @@ class SpeakerEncoder:
         path = Path(path)
         with self._lock:
             profiles_data = {
-                name: profile.model_dump(mode="json")
-                for name, profile in self._profiles.items()
+                name: profile.model_dump(mode="json") for name, profile in self._profiles.items()
             }
 
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -220,9 +214,7 @@ class SpeakerEncoder:
 
             logger.info("Loaded {} profile(s) from {}", len(loaded), path)
         except Exception as exc:
-            raise EnrollmentError(
-                f"Failed to load profiles from '{path}': {exc}"
-            ) from exc
+            raise EnrollmentError(f"Failed to load profiles from '{path}': {exc}") from exc
 
     @property
     def enrolled_speakers(self) -> list[str]:

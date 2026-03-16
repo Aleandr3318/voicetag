@@ -3,6 +3,7 @@
 Handles HuggingFace authentication, lazy model loading, and conversion
 of pyannote ``Annotation`` objects into plain dicts.
 """
+
 from __future__ import annotations
 
 import os
@@ -75,9 +76,7 @@ class Diarizer:
                     "the model license at "
                     "https://huggingface.co/pyannote/speaker-diarization-3.1"
                 ) from exc
-            raise DiarizationError(
-                f"Failed to load pyannote diarization pipeline: {exc}"
-            ) from exc
+            raise DiarizationError(f"Failed to load pyannote diarization pipeline: {exc}") from exc
 
     def diarize(self, audio_path: str | Path) -> list[dict]:
         """Run speaker diarization on an audio file.
@@ -104,14 +103,10 @@ class Diarizer:
                 warnings.simplefilter("ignore")
                 annotation = self._pipeline(str(audio_path))
             segments = self._parse_annotation(annotation)
-            logger.info(
-                "Diarization complete: {} segments detected", len(segments)
-            )
+            logger.info("Diarization complete: {} segments detected", len(segments))
             return segments
         except Exception as exc:
-            raise DiarizationError(
-                f"Diarization failed for '{audio_path.name}': {exc}"
-            ) from exc
+            raise DiarizationError(f"Diarization failed for '{audio_path.name}': {exc}") from exc
 
     @staticmethod
     def _parse_annotation(annotation: Any) -> list[dict]:

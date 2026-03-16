@@ -2,6 +2,7 @@
 
 All fixtures are self-contained — no real ML models or audio hardware required.
 """
+
 from __future__ import annotations
 
 import json
@@ -14,7 +15,6 @@ import pytest
 import soundfile as sf
 
 from voicetag.models import SpeakerProfile, VoiceTagConfig
-
 
 # ---------------------------------------------------------------------------
 # Audio fixtures

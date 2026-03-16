@@ -1,10 +1,10 @@
 """Tests for voicetag.overlap — overlap detection and segment merging."""
+
 from __future__ import annotations
 
 import pytest
 
 from voicetag.overlap import detect_overlaps, merge_segments
-
 
 # ---------------------------------------------------------------------------
 # detect_overlaps

@@ -1,4 +1,5 @@
 """Tests for voicetag.pipeline — Pipeline orchestration with mocked backends."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -16,7 +17,6 @@ from voicetag.models import (
 )
 from voicetag.pipeline import Pipeline
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -31,8 +31,10 @@ def _fake_embedding(seed: int = 0) -> np.ndarray:
 @pytest.fixture()
 def pipeline(config: VoiceTagConfig) -> Pipeline:
     """Return a Pipeline with both Diarizer and SpeakerEncoder mocked."""
-    with patch("voicetag.pipeline.Diarizer") as MockDiarizer, \
-         patch("voicetag.pipeline.SpeakerEncoder") as MockEncoder:
+    with (
+        patch("voicetag.pipeline.Diarizer") as MockDiarizer,
+        patch("voicetag.pipeline.SpeakerEncoder") as MockEncoder,
+    ):
         mock_diarizer = MockDiarizer.return_value
         mock_encoder = MockEncoder.return_value
 
@@ -110,8 +112,10 @@ class TestIdentify:
         self, mock_validate, mock_load, sample_audio_file: Path, config: VoiceTagConfig
     ):
         """Short segments below min_segment_duration should be filtered."""
-        with patch("voicetag.pipeline.Diarizer") as MockDiarizer, \
-             patch("voicetag.pipeline.SpeakerEncoder") as MockEncoder:
+        with (
+            patch("voicetag.pipeline.Diarizer") as MockDiarizer,
+            patch("voicetag.pipeline.SpeakerEncoder") as MockEncoder,
+        ):
             mock_diarizer = MockDiarizer.return_value
             mock_encoder = MockEncoder.return_value
             mock_diarizer.diarize.return_value = [
@@ -139,9 +143,7 @@ class TestPipelineCreation:
     def test_creation_with_config(self, MockEncoder, MockDiarizer, config: VoiceTagConfig):
         p = Pipeline(config=config)
         assert p._config == config
-        MockDiarizer.assert_called_once_with(
-            hf_token=config.hf_token, device=config.device
-        )
+        MockDiarizer.assert_called_once_with(hf_token=config.hf_token, device=config.device)
         MockEncoder.assert_called_once_with(device=config.device)
 
     @patch("voicetag.pipeline.Diarizer")

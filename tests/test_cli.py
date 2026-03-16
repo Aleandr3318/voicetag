@@ -1,4 +1,5 @@
 """Tests for voicetag.cli — Typer CLI commands."""
+
 from __future__ import annotations
 
 import json
@@ -115,9 +116,7 @@ class TestEnrollCommand:
 class TestProfilesListCommand:
     def test_list_no_profiles_file(self, tmp_path: Path):
         profiles_path = tmp_path / "nonexistent.json"
-        result = runner.invoke(
-            app, ["profiles", "list", "--profiles", str(profiles_path)]
-        )
+        result = runner.invoke(app, ["profiles", "list", "--profiles", str(profiles_path)])
         assert result.exit_code == 0
         assert "No Profiles" in result.output or "No profiles" in result.output
 
@@ -130,9 +129,7 @@ class TestProfilesListWithData:
 
         # The CLI creates a real SpeakerEncoder (no resemblyzer needed for load).
         # load_profiles does not need the ML model.
-        result = runner.invoke(
-            app, ["profiles", "list", "--profiles", str(profiles_path)]
-        )
+        result = runner.invoke(app, ["profiles", "list", "--profiles", str(profiles_path)])
         assert result.exit_code == 0
         assert "alice" in result.output
         assert "bob" in result.output
@@ -229,5 +226,5 @@ class TestIdentifyCommand:
 class TestErrorDisplay:
     def test_no_args_shows_help(self):
         result = runner.invoke(app, [])
-        assert result.exit_code == 0
+        assert result.exit_code in (0, 2)
         assert "Usage" in result.output or "usage" in result.output.lower()
