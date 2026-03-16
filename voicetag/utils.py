@@ -108,11 +108,12 @@ def _resample(
     duration = len(audio) / orig_sr
     target_length = int(duration * target_sr)
     if target_length == 0:
-        return np.array([], dtype=np.float32)  # type: ignore[return-value]
+        result: np.ndarray = np.array([], dtype=np.float32)
+        return result
 
     indices = np.linspace(0, len(audio) - 1, target_length, dtype=np.float64)
-    resampled = np.interp(indices, np.arange(len(audio), dtype=np.float64), audio)
-    return resampled.astype(np.float32)  # type: ignore[return-value]
+    resampled: np.ndarray = np.interp(indices, np.arange(len(audio), dtype=np.float64), audio)
+    return resampled.astype(np.float32)
 
 
 def chunk_audio(
